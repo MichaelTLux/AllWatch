@@ -2,18 +2,23 @@ const Actions = require('./actions')();
 import _ from 'lodash';
 import resemble from 'resemblejs'
 
+
 function getInitialState() {
+    const time = new Date();
     return {
         isMoving: false,
         isRunning: false,
         oldImage: '',
         refreshRate: "1",
         sensitivity: "10",
+        feedFrequency: "10",
+        lastSaved: time.getTime(),
+        capturedMovement: []
     };
 }
 
 function updatePhotos(state, screenShot) {
-    const newState = _.cloneDeep(state);
+    let newState = _.cloneDeep(state);
 
     newState.oldImage = screenShot;
 
@@ -23,7 +28,26 @@ function updatePhotos(state, screenShot) {
 
     newState.oldImage = screenShot;
 
+    newState = saveMovement(newState);
+
     return newState;
+}
+
+function saveMovement(state) {
+    const {isRunning, isMoving, lastSaved, feedFrequency} = state,
+        time = new Date();
+
+    console.log('time.getTime()-lastSaved', time.getTime() - lastSaved);
+    console.log('Number(feedFrequency)', Number(feedFrequency));
+
+    if (isMoving && isRunning && time.getTime() - lastSaved > Number(feedFrequency) * 1000) {
+        console.log('here');
+        state.capturedMovement.push(state.oldImage);
+        state.lastSaved = time.getTime();
+        return state;
+    }
+
+    return state;
 }
 
 export default (state = getInitialState(), action) => {
@@ -46,6 +70,11 @@ export default (state = getInitialState(), action) => {
                 sensitivity: action.value
             });
 
+        case Actions.liveFeed.setFeedFrequency: {
+            return Object.assign({}, state, {
+                feedFrequency: action.value
+            });
+        }
         default:
             return state;
     }

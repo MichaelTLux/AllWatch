@@ -60,7 +60,6 @@ function dataURLtoFile(dataurl, filename) {
 
 function saveScreenShot() {
     var file = dataURLtoFile(this.props.oldImage, 'a.png');
-    console.log(file);
     saveAs(file);
 }
 
@@ -76,14 +75,21 @@ export class LiveFeed extends React.Component {
 
         if (oldRefresh !== newRefresh) {
             const newRate = nextProps.refreshRate * 1000;
-            console.log('newRate', newRate);
             clearInterval(interval);
             interval = window.setInterval(checkMovement.bind(this), newRate);
         }
     }
 
     render() {
-        const {isRunning, isMoving, toggleIsRunning, refreshRate, sensitivity, handleChange} = this.props;
+        const {
+            isRunning,
+            isMoving,
+            toggleIsRunning,
+            refreshRate,
+            sensitivity,
+            handleChange,
+            feedFrequency
+        } = this.props;
 
         return (
             <Card shadow={1} className="section-card">
@@ -126,6 +132,15 @@ export class LiveFeed extends React.Component {
                                 onChange={handleChange.bind(null, "Sensitivity")}
                             />
                         </Cell>
+                        <Cell col={6}>
+                            How many second per picture
+                            <input
+                                type="text"
+                                value={feedFrequency}
+                                name="FeedFrequency"
+                                onChange={handleChange.bind(null, "FeedFrequency")}
+                            />
+                        </Cell>
                     </Grid>
                 </CardText>
             </Card>
@@ -134,13 +149,14 @@ export class LiveFeed extends React.Component {
 }
 
 export function mapStateToProps(state) {
-    const {isRunning, isMoving, refreshRate, sensitivity, oldImage} = state.liveFeed;
+    const {isRunning, isMoving, refreshRate, sensitivity, oldImage, feedFrequency} = state.liveFeed;
     return {
         isRunning,
         isMoving,
         refreshRate,
         sensitivity,
-        oldImage
+        oldImage,
+        feedFrequency
     };
 }
 

@@ -5,7 +5,8 @@ module.exports = () => {
             updatePhotos: i++,
             toggleIsRunning: i++,
             setSensitivity: i++,
-            setRefresh: i++
+            setRefresh: i++,
+            setFeedFrequency: i++
         }
     };
 };
