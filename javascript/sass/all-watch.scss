@@ -48,7 +48,17 @@ div {
     border: solid 3px #858585;
 
     &.live {
-      border: solid 3px #FF0000
+      border: solid 3px #FF0000;
+    }
+  }
+
+  &.video-feed-button-container {
+    padding-left: 24.5em;
+
+    .mdl-button {
+      font-family: "Lucida Console", Monaco, monospace;
+      font-size: 16px;
+      color: #666666;
     }
   }
 }

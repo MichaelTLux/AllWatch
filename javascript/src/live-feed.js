@@ -36,7 +36,7 @@ function renderShowCaptureText(showCaptured) {
 
 function renderRecordingBorder(isRunning) {
     if (isRunning) {
-       return " live";
+        return " live";
     }
 
     return "";
@@ -103,13 +103,12 @@ export class LiveFeed extends React.Component {
                         </Cell>
                     </Grid>
                     <Grid>
-                        <Cell col={3}>
-                            <p>This is the camera live feed</p>
-                        </Cell>
                         <Cell col={9}>
-                            <Button onClick={toggleIsRunning}>{getOnOffText.call(null, isRunning)}</Button>
-                            <Button onClick={saveScreenShot.bind(this)}>Save screen shot</Button>
-                            <Button onClick={toggleShowCaptured}>{renderShowCaptureText(showCaptured)}</Button>
+                            <div className="video-feed-button-container">
+                                <Button onClick={toggleIsRunning}>{getOnOffText.call(null, isRunning)}</Button>
+                                <Button onClick={saveScreenShot.bind(this)}>Save screen shot</Button>
+                                <Button onClick={toggleShowCaptured}>{renderShowCaptureText(showCaptured)}</Button>
+                            </div>
                         </Cell>
                     </Grid>
                     <Grid>
