@@ -37,18 +37,6 @@ function renderRecordingCircle(isRunning) {
     }
 }
 
-function renderMovingNotification(isMoving) {
-    if (isMoving) {
-        return (
-            <Card col={9}>
-                THERE IS MOVEMENT
-            </Card>
-        );
-    } else {
-        return <Card col={9}/>
-    }
-}
-
 function dataURLtoFile(dataurl, filename) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
@@ -83,7 +71,6 @@ export class LiveFeed extends React.Component {
     render() {
         const {
             isRunning,
-            isMoving,
             toggleIsRunning,
             refreshRate,
             sensitivity,
@@ -104,14 +91,17 @@ export class LiveFeed extends React.Component {
                         <Cell col={3}>
                             {renderRecordingCircle.call(null, isRunning)}
                         </Cell>
+                    </Grid>
+                    <Grid>
                         <Cell col={3}>
-                            This is the camera live feed
-                            {renderMovingNotification.call(null, isMoving)}
+                            <p>This is the camera live feed</p>
                         </Cell>
                         <Cell col={9}>
                             <Button onClick={toggleIsRunning}>{getOnOffText.call(null, isRunning)}</Button>
                             <Button onClick={saveScreenShot.bind(this)}>Save screen shot</Button>
                         </Cell>
+                    </Grid>
+                    <Grid>
                         <Cell col={6}>
                             RefreshRate(in seconds)
                             <input
@@ -132,6 +122,8 @@ export class LiveFeed extends React.Component {
                                 onChange={handleChange.bind(null, "Sensitivity")}
                             />
                         </Cell>
+                    </Grid>
+                    <Grid>
                         <Cell col={6}>
                             How many second per picture
                             <input
