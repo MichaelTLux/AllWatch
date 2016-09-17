@@ -6,7 +6,8 @@ module.exports = () => {
             toggleIsRunning: i++,
             setSensitivity: i++,
             setRefresh: i++,
-            setFeedFrequency: i++
+            setFeedFrequency: i++,
+            saveAllMovement: i++
         }
     };
 };

@@ -9,9 +9,9 @@ function getInitialState() {
         isMoving: false,
         isRunning: false,
         oldImage: '',
-        refreshRate: "1",
+        refreshRate: "2",
         sensitivity: "10",
-        feedFrequency: "10",
+        feedFrequency: "1",
         lastSaved: time.getTime(),
         capturedMovement: []
     };
@@ -37,17 +37,37 @@ function saveMovement(state) {
     const {isRunning, isMoving, lastSaved, feedFrequency} = state,
         time = new Date();
 
-    console.log('time.getTime()-lastSaved', time.getTime() - lastSaved);
-    console.log('Number(feedFrequency)', Number(feedFrequency));
-
     if (isMoving && isRunning && time.getTime() - lastSaved > Number(feedFrequency) * 1000) {
-        console.log('here');
-        state.capturedMovement.push(state.oldImage);
+        const seconds = time.getSeconds(),
+            minutes = time.getMinutes(),
+            hour = time.getHours(),
+            day = time.getDate(),
+            month = time.getMonth(),
+            year = time.getFullYear(),
+            file = dataURLtoFile(state.oldImage, `${hour}:${minutes}:${seconds}_${day}-${month}-${year}`);
+        state.capturedMovement.push(file);
         state.lastSaved = time.getTime();
         return state;
     }
 
     return state;
+}
+
+function dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type: mime});
+}
+
+function saveAllMovement(state) {
+    const {capturedMovement} = state;
+
+    for (let i = 0; i < capturedMovement.length(); i++) {
+
+    }
 }
 
 export default (state = getInitialState(), action) => {
@@ -70,11 +90,16 @@ export default (state = getInitialState(), action) => {
                 sensitivity: action.value
             });
 
-        case Actions.liveFeed.setFeedFrequency: {
+        case Actions.liveFeed.setFeedFrequency:
             return Object.assign({}, state, {
                 feedFrequency: action.value
             });
-        }
+
+
+        case Actions.liveFeed.saveAllMovement:
+            saveAllMovement(state);
+            return state;
+
         default:
             return state;
     }
