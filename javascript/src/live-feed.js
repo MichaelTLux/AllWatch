@@ -35,14 +35,12 @@ function renderShowCaptureText(showCaptured) {
     return "Show Captured Images";
 }
 
-function renderRecordingCircle(isRunning) {
+function renderRecordingBorder(isRunning) {
     if (isRunning) {
-        return (
-            <div id="circle"></div>
-        );
-    } else {
-        return <div/>;
+       return " live";
     }
+
+    return "";
 }
 
 function renderCapturedImages() {
@@ -115,15 +113,12 @@ export class LiveFeed extends React.Component {
                     <Grid>
                         <Cell col={2}/>
                         <Cell col={8}>
-                            <div className="webcam-container">
+                            <div className={`webcam-container${renderRecordingBorder.call(null, isRunning)}`}>
                                 <Webcam
                                     ref="webcam"
                                     audio={false}
                                 />
                             </div>
-                        </Cell>
-                        <Cell col={2}>
-                            {renderRecordingCircle.call(null, isRunning)}
                         </Cell>
                     </Grid>
                     <Grid>
