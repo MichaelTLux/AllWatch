@@ -1,29 +1,18 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Webcam from "react-user-media";
 import resemble from 'resemblejs'
 require('../css/main.css');
 require('../sass/live-feed.scss');
 
+const Actions = require('./reducers/actions')();
+
 import {Card, CardTitle, CardText, Grid, Cell, Button} from 'react-mdl';
 
-let oldimage,
-    newimage;
-
-function saveImage(){
-    oldimage =newimage;
-    newimage = this.refs.webcam.captureScreenshot();
-}
-
-function getScreenShot(){
-    var diff = resemble(oldimage).compareTo(newimage).ignoreColors().onComplete(function(data){
-        console.log(data);
-    });
-
-    console.log('diff', diff);
-}
-
-export default class LiveFeed extends React.Component {
+export class LiveFeed extends React.Component {
     render() {
+        const {saveScreenShot} = this.props;
+
         return (
             <Card shadow={1} className="section-card">
                 <CardTitle>
@@ -37,11 +26,34 @@ export default class LiveFeed extends React.Component {
                         <Cell col={12}>
                             This is the camera live feed
                         </Cell>
-                        <Button onClick={getScreenShot.bind(this)}>Compare Images</Button>
-                        <Button onClick={saveImage.bind(this)}>Save</Button>
+                        <Button onClick={compareScreenShots.bind(this)}>Compare Images</Button>
+                        <Button onClick={saveScreenShot.bind(this)}>Save</Button>
                     </Grid>
                 </CardText>
             </Card>
         );
     }
 }
+
+export function mapStateToProps(state) {
+    return {
+        isRunning: state.liveFeed.isRunning,
+        isMoving: state.liveFeed.isMoving
+    };
+}
+
+export function mapDispatchToProps(dispatch) {
+    return {
+        saveScreenShot() {
+            const action = {
+                type: Actions.liveFeed.updatePhotos,
+                value: this.refs.webcam.captureScreenshot()
+            };
+
+            dispatch(action);
+        }
+    }
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(LiveFeed);
