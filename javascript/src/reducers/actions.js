@@ -7,7 +7,7 @@ module.exports = () => {
             setSensitivity: i++,
             setRefresh: i++,
             setFeedFrequency: i++,
-            saveAllMovement: i++
+            toggleShowCaptured: i++
         }
     };
 };

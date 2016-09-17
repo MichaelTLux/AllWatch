@@ -1,13 +1,16 @@
 const Actions = require('./actions')();
 import _ from 'lodash';
-import resemble from 'resemblejs'
-
+import resemble from 'resemblejs';
+import {saveAs} from "file-saver";
+const JSZip = require("jszip");
+const zip = new JSZip();
 
 function getInitialState() {
     const time = new Date();
     return {
         isMoving: false,
         isRunning: false,
+        showCaptured: false,
         oldImage: '',
         refreshRate: "2",
         sensitivity: "10",
@@ -33,19 +36,23 @@ function updatePhotos(state, screenShot) {
     return newState;
 }
 
+function convertToFile(image){
+    const seconds = time.getSeconds(),
+        minutes = time.getMinutes(),
+        hour = time.getHours(),
+        day = time.getDate(),
+        month = time.getMonth(),
+        year = time.getFullYear(),
+        file = dataURLtoFile(image, `${hour}:${minutes}:${seconds}_${day}-${month}-${year}`);
+    return file;
+}
+
 function saveMovement(state) {
     const {isRunning, isMoving, lastSaved, feedFrequency} = state,
         time = new Date();
 
     if (isMoving && isRunning && time.getTime() - lastSaved > Number(feedFrequency) * 1000) {
-        const seconds = time.getSeconds(),
-            minutes = time.getMinutes(),
-            hour = time.getHours(),
-            day = time.getDate(),
-            month = time.getMonth(),
-            year = time.getFullYear(),
-            file = dataURLtoFile(state.oldImage, `${hour}:${minutes}:${seconds}_${day}-${month}-${year}`);
-        state.capturedMovement.push(file);
+        state.capturedMovement.push(state.oldImage);
         state.lastSaved = time.getTime();
         return state;
     }
@@ -65,9 +72,11 @@ function dataURLtoFile(dataurl, filename) {
 function saveAllMovement(state) {
     const {capturedMovement} = state;
 
-    for (let i = 0; i < capturedMovement.length(); i++) {
-
+    for (let i = 0; i < capturedMovement.length; i++) {
+        saveAs(capturedMovement[i]);
     }
+
+
 }
 
 export default (state = getInitialState(), action) => {
@@ -98,7 +107,14 @@ export default (state = getInitialState(), action) => {
 
         case Actions.liveFeed.saveAllMovement:
             saveAllMovement(state);
-            return state;
+            return Object.assign({}, state, {
+                capturedMovement: []
+            });
+
+        case Actions.liveFeed.toggleShowCaptured:
+            return Object.assign({}, state, {
+                showCaptured: !state.showCaptured
+            });
 
         default:
             return state;

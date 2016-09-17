@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Webcam from "react-user-media";
-import {saveAs} from "file-saver"
+import {saveAs} from "file-saver";
 require('../css/main.css');
 require('../sass/live-feed.scss');
 
@@ -25,6 +25,13 @@ function getOnOffText(isRunning) {
     } else {
         return "Turn On"
     }
+}
+
+function renderShowCaptureText(showCaptured) {
+    if (showCaptured) {
+        return "Hide Captured Images";
+    }
+    return "Show Captured Images";
 }
 
 function renderRecordingCircle(isRunning) {
@@ -75,7 +82,9 @@ export class LiveFeed extends React.Component {
             refreshRate,
             sensitivity,
             handleChange,
-            feedFrequency
+            feedFrequency,
+            showCaptured,
+            toggleShowCaptured
         } = this.props;
 
         return (
@@ -105,6 +114,7 @@ export class LiveFeed extends React.Component {
                         <Cell col={9}>
                             <Button onClick={toggleIsRunning}>{getOnOffText.call(null, isRunning)}</Button>
                             <Button onClick={saveScreenShot.bind(this)}>Save screen shot</Button>
+                            <Button onClick={toggleShowCaptured}>{renderShowCaptureText(showCaptured)}</Button>
                         </Cell>
                     </Grid>
                     <Grid>
@@ -147,14 +157,15 @@ export class LiveFeed extends React.Component {
 }
 
 export function mapStateToProps(state) {
-    const {isRunning, isMoving, refreshRate, sensitivity, oldImage, feedFrequency} = state.liveFeed;
+    const {isRunning, isMoving, refreshRate, sensitivity, oldImage, feedFrequency, showCaptured} = state.liveFeed;
     return {
         isRunning,
         isMoving,
         refreshRate,
         sensitivity,
         oldImage,
-        feedFrequency
+        feedFrequency,
+        showCaptured
     };
 }
 
@@ -181,6 +192,13 @@ export function mapDispatchToProps(dispatch) {
                     type: Actions.liveFeed[`set${name}`],
                     value
                 };
+
+            dispatch(action);
+        },
+        toggleShowCaptured() {
+            const action = {
+                type: Actions.liveFeed.toggleShowCaptured
+            };
 
             dispatch(action);
         }
