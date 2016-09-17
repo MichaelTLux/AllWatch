@@ -3,7 +3,9 @@ module.exports = () => {
     return {
         liveFeed: {
             updatePhotos: i++,
-            toggleIsRunning: i++
+            toggleIsRunning: i++,
+            setSensitivity: i++,
+            setRefresh: i++
         }
     };
 };

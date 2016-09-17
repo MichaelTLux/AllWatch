@@ -6,19 +6,19 @@ function getInitialState() {
     return {
         isMoving: false,
         oldImage: '',
-        isRunning: false
+        isRunning: false,
+        refreshRate: "1",
+        sensitivity: "10",
     };
 }
 
-function updatePhotos(state, screenShot){
+function updatePhotos(state, screenShot) {
     const newState = _.cloneDeep(state);
 
     newState.oldImage = screenShot;
 
-    resemble(state.oldImage).compareTo(screenShot).ignoreColors().onComplete(function(data){
-        if (data.misMatchPercentage>10) {
-            console.log('Something Moved');
-        }
+    resemble(state.oldImage).compareTo(screenShot).ignoreColors().onComplete(function (data) {
+        newState.isMoving = data.misMatchPercentage > Number(state.sensitivity);
     });
 
     newState.oldImage = screenShot;
@@ -34,6 +34,16 @@ export default (state = getInitialState(), action) => {
         case Actions.liveFeed.toggleIsRunning:
             return Object.assign({}, state, {
                 isRunning: !state.isRunning
+            });
+
+        case Actions.liveFeed.setRefresh:
+            return Object.assign({}, state, {
+                refreshRate: action.value
+            });
+
+        case Actions.liveFeed.setSensitivity:
+            return Object.assign({}, state, {
+                sensitivity: action.value
             });
 
         default:
