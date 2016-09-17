@@ -33,7 +33,7 @@ export default (state = getInitialState(), action) => {
 
         case Actions.liveFeed.toggleIsRunning:
             return Object.assign({}, state, {
-                isRunning: state.isRunning
+                isRunning: !state.isRunning
             });
 
         default:
