@@ -85,10 +85,16 @@ export class LiveFeed extends React.Component {
                 </CardTitle>
                 <CardText>
                     <Grid>
-                        <Cell col={9}>
-                            <Webcam ref="webcam"/>
+                        <Cell col={3}/>
+                        <Cell col={8}>
+                            <div className="webcam-container">
+                                <Webcam
+                                    ref="webcam"
+                                    audio={false}
+                                />
+                            </div>
                         </Cell>
-                        <Cell col={3}>
+                        <Cell col={1}>
                             {renderRecordingCircle.call(null, isRunning)}
                         </Cell>
                     </Grid>

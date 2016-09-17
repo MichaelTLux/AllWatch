@@ -13,6 +13,7 @@ export default class AllWatch extends React.Component {
                     <NavBar/>
                     <Drawer/>
                     <main className="mdl-layout__content">
+                        <div className="header-space"/>
                         <div className="page-content">
                             <LiveFeed/>
                         </div>
