@@ -1,0 +1,34 @@
+{
+  "extends": "airbnb",
+  "env": {
+      "mocha": true
+  },
+  "rules": { //overrides
+    "comma-dangle": ["error", "never"],
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "consistent-return": 0,
+    "default-case": 0,
+    "func-names": ["off"],
+    "indent": ["error", 4, {"SwitchCase": 1}],
+    "max-len": ["error", 120],
+    "no-alert": 0,
+    "no-case-declarations": ["off"],
+    "no-trailing-spaces": ["error", {"skipBlankLines": true}],
+    "object-curly-spacing": ["error", "never"],
+    "one-var": ["error", {"var": "always", "let": "always"}],
+    "padded-blocks": ["error", "never"],
+    "yoda": ["error", "never", { "onlyEquality": true }],
+
+    "react/prefer-stateless-function": "off",
+    "react/jsx-space-before-closing": "off",
+    "react/jsx-no-bind": "off",
+    "react/jsx-indent-props": "off",
+    "react/prop-types": "off"
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  }
+}
