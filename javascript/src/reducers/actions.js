@@ -7,7 +7,9 @@ module.exports = () => {
             setSensitivity: i++,
             setRefresh: i++,
             setFeedFrequency: i++,
-            toggleShowCaptured: i++
+            toggleShowCaptured: i++,
+            deleteCapturedImage: i++,
+            saveCapturedImage: i++
         }
     };
 };

@@ -2,8 +2,6 @@ const Actions = require('./actions')();
 import _ from 'lodash';
 import resemble from 'resemblejs';
 import {saveAs} from "file-saver";
-const JSZip = require("jszip");
-const zip = new JSZip();
 
 function getInitialState() {
     const time = new Date();
@@ -36,17 +34,6 @@ function updatePhotos(state, screenShot) {
     return newState;
 }
 
-function convertToFile(image){
-    const seconds = time.getSeconds(),
-        minutes = time.getMinutes(),
-        hour = time.getHours(),
-        day = time.getDate(),
-        month = time.getMonth(),
-        year = time.getFullYear(),
-        file = dataURLtoFile(image, `${hour}:${minutes}:${seconds}_${day}-${month}-${year}`);
-    return file;
-}
-
 function saveMovement(state) {
     const {isRunning, isMoving, lastSaved, feedFrequency} = state,
         time = new Date();
@@ -69,14 +56,27 @@ function dataURLtoFile(dataurl, filename) {
     return new File([u8arr], filename, {type: mime});
 }
 
-function saveAllMovement(state) {
-    const {capturedMovement} = state;
+function convertToFile(image){
+    // const  seconds = time.getSeconds(),
+        // minutes = time.getMinutes(),
+        // hour = time.getHours(),
+        // day = time.getDate(),
+        // month = time.getMonth(),
+        // year = time.getFullYear(),
+        // file = dataURLtoFile(image, `${hour}:${minutes}:${seconds}_${day}-${month}-${year}`);
+    return dataURLtoFile(image, `capturedMovement`);
+}
 
-    for (let i = 0; i < capturedMovement.length; i++) {
-        saveAs(capturedMovement[i]);
-    }
+function saveCapturedImage(state, index) {
+    const file = convertToFile(state.capturedMovement[index]);
+    saveAs(file);
+}
 
-
+function removeElementFromArray(array, index) {
+    return [
+        ...array.slice(0, index),
+        ...array.slice(index + 1)
+    ];
 }
 
 export default (state = getInitialState(), action) => {
@@ -104,16 +104,18 @@ export default (state = getInitialState(), action) => {
                 feedFrequency: action.value
             });
 
-
-        case Actions.liveFeed.saveAllMovement:
-            saveAllMovement(state);
-            return Object.assign({}, state, {
-                capturedMovement: []
-            });
-
         case Actions.liveFeed.toggleShowCaptured:
             return Object.assign({}, state, {
                 showCaptured: !state.showCaptured
+            });
+
+        case Actions.liveFeed.saveCapturedImage:
+            saveCapturedImage(state, action.value);
+            return state;
+
+        case Actions.liveFeed.deleteCapturedImage:
+            return Object.assign({}, state, {
+                capturedMovement: removeElementFromArray(state.capturedMovement, action.value)
             });
 
         default:
