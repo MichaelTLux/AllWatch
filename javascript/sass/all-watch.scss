@@ -1,10 +1,36 @@
 .all-watch {
   .mdl-layout {
+    .mdl-layout__header {
+      background-color: #DD5B00;
+
+      .mdl-layout__header-row {
+        .mdl-layout-title {
+          font-family: "Lucida Console", Monaco, monospace;
+          font-size: 22px;
+        }
+      }
+    }
+
     .mdl-layout__content {
+      background-color: #333333;
+
       .page-content {
         margin: 0 auto;
         max-width: 1400px;
         width: 100%;
+
+        .mdl-card__title {
+          background-color: #DD5B00;
+
+          .mdl-card__title-text {
+            font-family: "Lucida Console", Monaco, monospace;
+          }
+        }
+
+        .mdl-card__supporting-text {
+          background-color: #CCCCCC;
+          width: 100%;
+        }
       }
     }
   }
@@ -19,5 +45,6 @@ div {
   &.webcam-container {
     border: solid 3px #858585;
     width: 640px;
+    margin-left: 5em;
   }
 }
