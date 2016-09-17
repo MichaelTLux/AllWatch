@@ -5,8 +5,8 @@ import resemble from 'resemblejs'
 function getInitialState() {
     return {
         isMoving: false,
-        oldImage: '',
         isRunning: false,
+        oldImage: '',
         refreshRate: "1",
         sensitivity: "10",
     };
@@ -17,8 +17,8 @@ function updatePhotos(state, screenShot) {
 
     newState.oldImage = screenShot;
 
-    resemble(state.oldImage).compareTo(screenShot).ignoreColors().onComplete(function (data) {
-        newState.isMoving = data.misMatchPercentage > Number(state.sensitivity);
+    resemble(state.oldImage).compareTo(screenShot).ignoreColors().onComplete(function (result) {
+        newState.isMoving = result.misMatchPercentage > Number(state.sensitivity);
     });
 
     newState.oldImage = screenShot;

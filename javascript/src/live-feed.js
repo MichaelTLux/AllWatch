@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Webcam from "react-user-media";
+import {saveAs} from "file-saver"
 require('../css/main.css');
 require('../sass/live-feed.scss');
 
@@ -48,10 +49,25 @@ function renderMovingNotification(isMoving) {
     }
 }
 
+function dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type: mime});
+}
+
+function saveScreenShot() {
+    var file = dataURLtoFile(this.props.oldImage, 'a.png');
+    console.log(file);
+    saveAs(file);
+}
+
 export class LiveFeed extends React.Component {
     componentWillMount() {
         const refreshRate = this.props.refreshRate * 1000;
-        interval = window.setInterval(checkMovement.bind(this), );
+        interval = window.setInterval(checkMovement.bind(this), refreshRate);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -88,6 +104,7 @@ export class LiveFeed extends React.Component {
                         </Cell>
                         <Cell col={9}>
                             <Button onClick={toggleIsRunning}>{getOnOffText.call(null, isRunning)}</Button>
+                            <Button onClick={saveScreenShot.bind(this)}>Save screen shot</Button>
                         </Cell>
                         <Cell col={6}>
                             RefreshRate(in seconds)
@@ -100,7 +117,8 @@ export class LiveFeed extends React.Component {
                             />
                         </Cell>
                         <Cell col={6}>
-                            Sensitivity(0 is for catching fly movements, 100 would let an elephant run by
+                            Sensitivity(0 is for catching fly movements, 100 would let an elephant run by)
+                            the faster the refresh rate the lower the sensitivity needs to be.
                             <input
                                 type="text"
                                 value={sensitivity}
@@ -116,12 +134,13 @@ export class LiveFeed extends React.Component {
 }
 
 export function mapStateToProps(state) {
-    const {isRunning, isMoving, refreshRate, sensitivity} = state.liveFeed;
+    const {isRunning, isMoving, refreshRate, sensitivity, oldImage} = state.liveFeed;
     return {
         isRunning,
         isMoving,
         refreshRate,
-        sensitivity
+        sensitivity,
+        oldImage
     };
 }
 
