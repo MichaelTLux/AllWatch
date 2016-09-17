@@ -1,1 +1,45 @@
 @CHARSET "UTF-8";
+
+.section-card.mdl-card {
+    width: 90%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    min-height: 124px;
+    transition: all 0.5s;
+}
+
+.section-card > .mdl-card__title {
+    color: #fff;
+    height: 62px;
+    background-color: rgb(143, 172, 186);
+}
+
+.section-card .mdl-card__menu {
+    top: 19px;
+}
+
+.inner-card.mdl-card {
+    width: 97%;
+    display: block;
+    margin: 10px auto 0 auto;
+    min-height: 124px;
+    transition: all 0.5s;
+}
+
+.inner-card > .mdl-card__title {
+    color: #fff;
+    height: 48px;
+    background-color: rgb(118, 146, 160);
+}
+
+.inner-card .mdl-card__title-text {
+    font-size: 20px !important;
+    position: absolute;
+    top: 12px;
+}
+
+.inner-card .mdl-card__menu {
+    top: 11px;
+}

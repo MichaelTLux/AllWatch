@@ -25,9 +25,11 @@
     "lodash": "^4.8.1",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
-    "react-mdl": "^1.6.1",
+    "react-mdl": "^1.7.2",
     "react-redux": "^4.4.1",
-    "redux": "^3.3.1"
+    "react-user-media": "^0.1.6",
+    "redux": "^3.3.1",
+    "resemblejs": "^2.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
