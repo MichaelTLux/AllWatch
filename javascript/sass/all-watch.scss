@@ -43,8 +43,12 @@ div {
   }
 
   &.webcam-container {
-    border: solid 3px #858585;
     width: 640px;
     margin-left: 5em;
+    border: solid 3px #858585;
+
+    &.live {
+      border: solid 3px #FF0000
+    }
   }
 }
