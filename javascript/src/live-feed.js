@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Webcam from "react-user-media";
 import {saveAs} from "file-saver";
+import CapturedImage from "./captured-image";
 require('../css/main.css');
 require('../sass/live-feed.scss');
 
@@ -40,6 +41,24 @@ function renderRecordingBorder(isRunning) {
     }
 
     return "";
+}
+
+function renderCapturedImages() {
+    const {capturedMovement, showCaptured, deleteCapturedImage, saveCapturedImage} = this.props;
+
+    if (showCaptured) {
+        return capturedMovement.map((image, index) =>
+            <Cell col={6}>
+                <CapturedImage
+                    image={image}
+                    index={index}
+                    deleteImage={deleteCapturedImage}
+                    saveImage={saveCapturedImage}
+                    key={index}
+                />
+            </Cell>
+        );
+    }
 }
 
 function dataURLtoFile(dataurl, filename) {
@@ -144,6 +163,9 @@ export class LiveFeed extends React.Component {
                             />
                         </Cell>
                     </Grid>
+                    <Grid className="captured-images">
+                        {renderCapturedImages.call(this)}
+                    </Grid>
                 </CardText>
             </Card>
         );
@@ -151,7 +173,7 @@ export class LiveFeed extends React.Component {
 }
 
 export function mapStateToProps(state) {
-    const {isRunning, isMoving, refreshRate, sensitivity, oldImage, feedFrequency, showCaptured} = state.liveFeed;
+    const {isRunning, isMoving, refreshRate, sensitivity, oldImage, feedFrequency, capturedMovement, showCaptured} = state.liveFeed;
     return {
         isRunning,
         isMoving,
@@ -159,7 +181,8 @@ export function mapStateToProps(state) {
         sensitivity,
         oldImage,
         feedFrequency,
-        showCaptured
+        showCaptured,
+        capturedMovement
     };
 }
 
@@ -192,6 +215,22 @@ export function mapDispatchToProps(dispatch) {
         toggleShowCaptured() {
             const action = {
                 type: Actions.liveFeed.toggleShowCaptured
+            };
+
+            dispatch(action);
+        },
+        deleteCapturedImage(index) {
+            const action = {
+                type: Actions.liveFeed.deleteCapturedImage,
+                value: index
+            };
+
+            dispatch(action);
+        },
+        saveCapturedImage(index) {
+            const action = {
+                type: Actions.liveFeed.saveCapturedImage,
+                value: index
             };
 
             dispatch(action);
