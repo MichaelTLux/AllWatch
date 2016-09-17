@@ -131,8 +131,9 @@ export class LiveFeed extends React.Component {
                         </Cell>
                     </Grid>
                     <Grid>
-                        <Cell col={6}>
-                            RefreshRate(in seconds)
+                        <Cell col={4} className="video-feed-input">
+                            <label>Refresh Rate</label>
+                            <br/>
                             <input
                                 type="text"
                                 className="mousetrap"
@@ -141,9 +142,9 @@ export class LiveFeed extends React.Component {
                                 onChange={handleChange.bind(null, "Refresh")}
                             />
                         </Cell>
-                        <Cell col={6}>
-                            Sensitivity(0 is for catching fly movements, 100 would let an elephant run by)
-                            the faster the refresh rate the lower the sensitivity needs to be.
+                        <Cell col={4} className="video-feed-input">
+                            <label>Sensitivity</label>
+                            <br/>
                             <input
                                 type="text"
                                 value={sensitivity}
@@ -151,10 +152,9 @@ export class LiveFeed extends React.Component {
                                 onChange={handleChange.bind(null, "Sensitivity")}
                             />
                         </Cell>
-                    </Grid>
-                    <Grid>
-                        <Cell col={6}>
-                            How many second per picture
+                        <Cell col={4} className="video-feed-input">
+                            <label>Pictures/Second</label>
+                            <br/>
                             <input
                                 type="text"
                                 value={feedFrequency}

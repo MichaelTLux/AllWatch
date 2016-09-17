@@ -62,3 +62,25 @@ div {
     }
   }
 }
+
+label {
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+input {
+  background: none;
+  outline: none;
+  border: 1px solid #666666;
+  padding: 1px;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 13px;
+  color: #666666;
+
+  &:focus {
+    border: 1px solid #DD5D00;
+  }
+}
+
+.video-feed-input {
+  padding-left: 8em;
+}
