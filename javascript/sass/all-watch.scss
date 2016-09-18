@@ -7,6 +7,7 @@
         .mdl-layout-title {
           font-family: "Lucida Console", Monaco, monospace;
           font-size: 22px;
+          color: #CCCCCC;
         }
       }
     }
@@ -24,6 +25,7 @@
 
           .mdl-card__title-text {
             font-family: "Lucida Console", Monaco, monospace;
+            color: #CCCCCC;
           }
         }
 
@@ -83,4 +85,20 @@ input {
 
 .video-feed-input {
   padding-left: 8em;
+}
+
+.section-card {
+  .mdl-card__menu {
+    top: 14px;
+
+    .mdl-button {
+      .material-icons {
+        color: #CCCCCC;
+      }
+    }
+  }
+
+  &.right-column {
+    margin-left: 0;
+  }
 }
