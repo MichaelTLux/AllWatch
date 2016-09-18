@@ -9,7 +9,8 @@ module.exports = () => {
             setFeedFrequency: i++,
             toggleShowCaptured: i++,
             deleteCapturedImage: i++,
-            saveCapturedImage: i++
+            saveCapturedImage: i++,
+            deleteAllImages: i++
         }
     };
 };

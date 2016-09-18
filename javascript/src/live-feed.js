@@ -47,10 +47,11 @@ function renderCapturedImages() {
     const {capturedMovement, showCaptured, deleteCapturedImage, saveCapturedImage} = this.props;
 
     if (showCaptured) {
-        return capturedMovement.map((image, index) =>
+        return capturedMovement.map((capturedImage, index) =>
             <Cell col={6}>
                 <CapturedImage
-                    image={image}
+                    image={capturedImage.image}
+                    timeStamp={capturedImage.timeStamp}
                     index={index}
                     deleteImage={deleteCapturedImage}
                     saveImage={saveCapturedImage}
@@ -101,7 +102,8 @@ export class LiveFeed extends React.Component {
             handleChange,
             feedFrequency,
             showCaptured,
-            toggleShowCaptured
+            toggleShowCaptured,
+            deleteAll
         } = this.props;
 
         return (
@@ -127,6 +129,7 @@ export class LiveFeed extends React.Component {
                                 <Button onClick={toggleIsRunning}>{getOnOffText.call(null, isRunning)}</Button>
                                 <Button onClick={saveScreenShot.bind(this)}>Save screen shot</Button>
                                 <Button onClick={toggleShowCaptured}>{renderShowCaptureText(showCaptured)}</Button>
+                                <Button onClick={deleteAll}>Delete All Images</Button>
                             </div>
                         </Cell>
                     </Grid>
@@ -231,6 +234,13 @@ export function mapDispatchToProps(dispatch) {
             const action = {
                 type: Actions.liveFeed.saveCapturedImage,
                 value: index
+            };
+
+            dispatch(action);
+        },
+        deleteAll() {
+            const action = {
+                type: Actions.liveFeed.deleteAllImages
             };
 
             dispatch(action);

@@ -12,13 +12,13 @@ function isInRightColumn(isRight) {
 
 export default class CapturedImage extends React.Component {
     render() {
-        const {image, index, saveImage, deleteImage} = this.props,
+        const {image, timeStamp, index, saveImage, deleteImage} = this.props,
             isRight = index % 2 == 1;
 
         return (
             <Card shadow={1} className={`section-card${isInRightColumn.call(null, isRight)}`}>
                 <CardTitle>
-                    Captured Image
+                    {timeStamp}
                 </CardTitle>
                 <CardMenu>
                     <IconButton onClick={saveImage.bind(null, index)} name="save"/>

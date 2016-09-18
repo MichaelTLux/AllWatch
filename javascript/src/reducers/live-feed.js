@@ -15,6 +15,7 @@ function getInitialState() {
         feedFrequency: "1",
         lastSaved: time.getTime(),
         capturedMovement: []
+
     };
 }
 
@@ -34,12 +35,25 @@ function updatePhotos(state, screenShot) {
     return newState;
 }
 
+function getTimeStamp(time) {
+    const minutes = time.getMinutes(),
+    hour = time.getHours(),
+    day = time.getDate(),
+    month = time.getMonth(),
+    year = time.getFullYear();
+    return `${hour}:${minutes}-${month}/${day}/${year}`;
+}
+
 function saveMovement(state) {
     const {isRunning, isMoving, lastSaved, feedFrequency} = state,
         time = new Date();
 
     if (isMoving && isRunning && time.getTime() - lastSaved > Number(feedFrequency) * 1000) {
-        state.capturedMovement.push(state.oldImage);
+        const capturedItem = {
+            image: state.oldImage,
+            timeStamp: getTimeStamp(time)
+        };
+        state.capturedMovement.push(capturedItem);
         state.lastSaved = time.getTime();
         return state;
     }
@@ -56,19 +70,8 @@ function dataURLtoFile(dataurl, filename) {
     return new File([u8arr], filename, {type: mime});
 }
 
-function convertToFile(image){
-    // const  seconds = time.getSeconds(),
-        // minutes = time.getMinutes(),
-        // hour = time.getHours(),
-        // day = time.getDate(),
-        // month = time.getMonth(),
-        // year = time.getFullYear(),
-        // file = dataURLtoFile(image, `${hour}:${minutes}:${seconds}_${day}-${month}-${year}`);
-    return dataURLtoFile(image, `capturedMovement`);
-}
-
 function saveCapturedImage(state, index) {
-    const file = convertToFile(state.capturedMovement[index]);
+    const file = dataURLtoFile(state.capturedMovement[index].image, state.capturedMovement[index].timeStamp);
     saveAs(file);
 }
 
@@ -116,6 +119,12 @@ export default (state = getInitialState(), action) => {
         case Actions.liveFeed.deleteCapturedImage:
             return Object.assign({}, state, {
                 capturedMovement: removeElementFromArray(state.capturedMovement, action.value)
+            });
+
+        case Actions.liveFeed.deleteAllImages:
+            console.log('here');
+            return Object.assign({}, state, {
+                capturedMovement: []
             });
 
         default:
